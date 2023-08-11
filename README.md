@@ -5,7 +5,6 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/28746254-8ad1ff81-001e-49ce-ab1b-217d2c25c5cc?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D28746254-8ad1ff81-001e-49ce-ab1b-217d2c25c5cc%26entityType%3Dcollection%26workspaceId%3D07209754-a3c0-4ddf-a2f5-1c5524003560)
 </p>
 
 ## Preview
