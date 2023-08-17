@@ -35,7 +35,7 @@
                       Tidak Ada Foto
                   @endif
               </td>
-              <td class="text-center align-middle">{{ $siswa->nama }}</td>
+              <td class="text-center align-middle fw-bold">{{ $siswa->nama }}</td>
               <td class="text-center align-middle">{{ $siswa->sekolah }}</td>
               <td class="text-center align-middle">
                   @if ($siswa->program === 'Flutter')

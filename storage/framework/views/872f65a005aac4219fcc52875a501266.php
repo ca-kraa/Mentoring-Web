@@ -28,7 +28,7 @@
           <?php $__currentLoopData = $skors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $skor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <tr>
             <td class="text-center align-middle"><?php echo e($no++); ?></td>
-              <td class="text-center align-middle"><?php echo e($skor->nama); ?></td>
+              <td class="text-center align-middle fw-bold"><?php echo e($skor->nama); ?></td>
               <td class="text-center align-middle"><?php echo e($skor->sekolah); ?></td>
               <td class="text-center align-middle">
             <?php if($skor->program === 'Flutter'): ?>
@@ -44,8 +44,19 @@
 
             <?php endif; ?></td>
               <td class="text-center align-middle">Batch <?php echo e($skor->angkatan); ?></td>
-              <td class="text-center align-middle"><?php echo e(($skor->task1 + $skor->task2 + $skor->task3 + $skor->task4 + $skor->task5 + $skor->task6 + $skor->task7 + $skor->task8) / 8); ?></td>
-              <td class="text-center align-middle">
+              <td class="text-center align-middle fw-bold">
+                <?php
+                $averageScore = ($skor->task1 + $skor->task2 + $skor->task3 + $skor->task4 + $skor->task5 + $skor->task6 + $skor->task7 + $skor->task8) / 8;
+                ?>
+                <?php if($averageScore > 75): ?>
+                    <span class="text-success"><?php echo e($averageScore); ?></span>
+                <?php elseif($averageScore >= 70 && $averageScore <= 74): ?>
+                    <span class="text-muted"><?php echo e($averageScore); ?></span>
+                <?php else: ?>
+                    <span class="text-danger"><?php echo e($averageScore); ?></span>
+                <?php endif; ?>
+            </td>
+            <td class="text-center align-middle">
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatNilaiModal<?php echo e($skor->id); ?>">
                     <i class="fa-solid fa-eye"></i>
                   </button>
@@ -118,7 +129,7 @@
             <input type="text" name="program" id="program" class="form-control" readonly>
           </div>
           <div class="form-group">
-            <label for="angkatan">angkatan</label>
+            <label for="angkatan">Angkatan Ke</label>
             <input type="text" name="angkatan" id="angkatan" class="form-control" readonly>
           </div>
           <input type="hidden" name="task1" value="0">
@@ -163,7 +174,15 @@
                                     <?php for($i = 1; $i <= 4; $i++): ?>
                                         <tr>
                                             <td>Task <?php echo e($i); ?></td>
-                                            <td><?php echo e($skor["task$i"]); ?></td>
+                                            <td>
+                                                <?php if($skor["task$i"] > 75): ?>
+                                                    <span class="text-success"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php elseif($skor["task$i"] >= 70 && $skor["task$i"] <= 74): ?>
+                                                    <span class="text-muted"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php else: ?>
+                                                    <span class="text-danger"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endfor; ?>
                                 </tbody>
@@ -181,7 +200,15 @@
                                     <?php for($i = 5; $i <= 8; $i++): ?>
                                         <tr>
                                             <td>Task <?php echo e($i); ?></td>
-                                            <td><?php echo e($skor["task$i"]); ?></td>
+                                            <td>
+                                                <?php if($skor["task$i"] > 75): ?>
+                                                    <span class="text-success"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php elseif($skor["task$i"] >= 70 && $skor["task$i"] <= 74): ?>
+                                                    <span class="text-muted"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php else: ?>
+                                                    <span class="text-danger"><?php echo e($skor["task$i"]); ?></span>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endfor; ?>
                                 </tbody>

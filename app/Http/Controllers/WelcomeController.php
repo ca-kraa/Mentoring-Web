@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa;
-use App\Models\Skor;
 
 class WelcomeController extends Controller
 {
-
     public function index(Request $request)
     {
         $programFilter = $request->input('program');
+
         $validPrograms = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
 
         $query = Siswa::query();
@@ -20,13 +19,22 @@ class WelcomeController extends Controller
             $query->where('program', $programFilter);
         }
 
-        // Use eager loading to retrieve skor for each siswa
-        $siswas = $query->with('skor')->get();
+        $siswas = $query->with(['skors' => function ($query) {
+            $query->orderByDesc('task1')
+                ->orderByDesc('task2')
+                ->orderByDesc('task3')
+                ->orderByDesc('task4')
+                ->orderByDesc('task5')
+                ->orderByDesc('task6')
+                ->orderByDesc('task7')
+                ->orderByDesc('task8');
+        }])->get();
 
-        // Sort siswas based on total score
+        // Mengurutkan siswa berdasarkan skor tertinggi
         $sortedSiswas = $siswas->sortByDesc(function ($siswa) {
-            if ($siswa->skor) {
-                return ($siswa->skor->task1 + $siswa->skor->task2 + $siswa->skor->task3 + $siswa->skor->task4 + $siswa->skor->task5 + $siswa->skor->task6 + $siswa->skor->task7 + $siswa->skor->task8) / 8;
+            if ($siswa->skors) {
+                return ($siswa->skors->task1 + $siswa->skors->task2 + $siswa->skors->task3 + $siswa->skors->task4 +
+                    $siswa->skors->task5 + $siswa->skors->task6 + $siswa->skors->task7 + $siswa->skors->task8) / 8;
             } else {
                 return 0;
             }

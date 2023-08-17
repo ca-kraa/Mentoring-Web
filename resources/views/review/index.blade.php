@@ -12,13 +12,13 @@
       <table id="example1" class="table table-bordered table-striped">
           <thead>
               <tr>
-                  <th class="text-center" >No</th>
-                  <th class="text-center" >Photo</th>
-                  <th class="text-center" >Nama</th>
-                  <th class="text-center" >angkatan</th>
-                  <th class="text-center" >Program</th>
-                  <th class="text-center" >Review</th>
-                  <th class="text-center" >Aksi</th>
+                  <th class="text-center">No</th>
+                  <th class="text-center">Photo</th>
+                  <th class="text-center">Nama</th>
+                  <th class="text-center">angkatan</th>
+                  <th class="text-center">Program</th>
+                  <th class="text-center">Review</th>
+                  <th class="text-center">Aksi</th>
               </tr>
           </thead>
           <tbody>
@@ -137,6 +137,7 @@
   </div>
 </div>
 
+@foreach ($reviews as $review)
 <div class="modal fade" id="reviewModal{{ $review->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -153,6 +154,7 @@
       </div>
   </div>
 </div>
+@endforeach
 
 @foreach ($reviews as $review)
     <div class="modal fade" id="editReviewModal{{ $review->id }}" tabindex="-1" aria-labelledby="editReviewModalLabel{{ $review->id }}" aria-hidden="true">

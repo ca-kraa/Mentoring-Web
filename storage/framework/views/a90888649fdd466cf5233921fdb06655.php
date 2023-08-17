@@ -35,7 +35,7 @@
                       Tidak Ada Foto
                   <?php endif; ?>
               </td>
-              <td class="text-center align-middle"><?php echo e($siswa->nama); ?></td>
+              <td class="text-center align-middle fw-bold"><?php echo e($siswa->nama); ?></td>
               <td class="text-center align-middle"><?php echo e($siswa->sekolah); ?></td>
               <td class="text-center align-middle">
                   <?php if($siswa->program === 'Flutter'): ?>

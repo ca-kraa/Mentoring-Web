@@ -28,7 +28,7 @@
           @foreach ($skors as $skor)
           <tr>
             <td class="text-center align-middle">{{ $no++ }}</td>
-              <td class="text-center align-middle">{{ $skor->nama }}</td>
+              <td class="text-center align-middle fw-bold">{{ $skor->nama }}</td>
               <td class="text-center align-middle">{{ $skor->sekolah }}</td>
               <td class="text-center align-middle">
             @if ($skor->program === 'Flutter')
@@ -43,8 +43,19 @@
                 {{ $skor->program }}
             @endif</td>
               <td class="text-center align-middle">Batch {{ $skor->angkatan }}</td>
-              <td class="text-center align-middle">{{ ($skor->task1 + $skor->task2 + $skor->task3 + $skor->task4 + $skor->task5 + $skor->task6 + $skor->task7 + $skor->task8) / 8 }}</td>
-              <td class="text-center align-middle">
+              <td class="text-center align-middle fw-bold">
+                <?php
+                $averageScore = ($skor->task1 + $skor->task2 + $skor->task3 + $skor->task4 + $skor->task5 + $skor->task6 + $skor->task7 + $skor->task8) / 8;
+                ?>
+                @if ($averageScore > 75)
+                    <span class="text-success">{{ $averageScore }}</span>
+                @elseif ($averageScore >= 70 && $averageScore <= 74)
+                    <span class="text-muted">{{ $averageScore }}</span>
+                @else
+                    <span class="text-danger">{{ $averageScore }}</span>
+                @endif
+            </td>
+            <td class="text-center align-middle">
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatNilaiModal{{ $skor->id }}">
                     <i class="fa-solid fa-eye"></i>
                   </button>
@@ -117,7 +128,7 @@
             <input type="text" name="program" id="program" class="form-control" readonly>
           </div>
           <div class="form-group">
-            <label for="angkatan">angkatan</label>
+            <label for="angkatan">Angkatan Ke</label>
             <input type="text" name="angkatan" id="angkatan" class="form-control" readonly>
           </div>
           <input type="hidden" name="task1" value="0">
@@ -162,7 +173,15 @@
                                     @for ($i = 1; $i <= 4; $i++)
                                         <tr>
                                             <td>Task {{ $i }}</td>
-                                            <td>{{ $skor["task$i"] }}</td>
+                                            <td>
+                                                @if ($skor["task$i"] > 75)
+                                                    <span class="text-success">{{ $skor["task$i"] }}</span>
+                                                @elseif ($skor["task$i"] >= 70 && $skor["task$i"] <= 74)
+                                                    <span class="text-muted">{{ $skor["task$i"] }}</span>
+                                                @else
+                                                    <span class="text-danger">{{ $skor["task$i"] }}</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endfor
                                 </tbody>
@@ -180,7 +199,15 @@
                                     @for ($i = 5; $i <= 8; $i++)
                                         <tr>
                                             <td>Task {{ $i }}</td>
-                                            <td>{{ $skor["task$i"] }}</td>
+                                            <td>
+                                                @if ($skor["task$i"] > 75)
+                                                    <span class="text-success">{{ $skor["task$i"] }}</span>
+                                                @elseif ($skor["task$i"] >= 70 && $skor["task$i"] <= 74)
+                                                    <span class="text-muted">{{ $skor["task$i"] }}</span>
+                                                @else
+                                                    <span class="text-danger">{{ $skor["task$i"] }}</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endfor
                                 </tbody>

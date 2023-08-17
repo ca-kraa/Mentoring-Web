@@ -12,13 +12,13 @@
       <table id="example1" class="table table-bordered table-striped">
           <thead>
               <tr>
-                  <th class="text-center" >No</th>
-                  <th class="text-center" >Photo</th>
-                  <th class="text-center" >Nama</th>
-                  <th class="text-center" >angkatan</th>
-                  <th class="text-center" >Program</th>
-                  <th class="text-center" >Review</th>
-                  <th class="text-center" >Aksi</th>
+                  <th class="text-center">No</th>
+                  <th class="text-center">Photo</th>
+                  <th class="text-center">Nama</th>
+                  <th class="text-center">angkatan</th>
+                  <th class="text-center">Program</th>
+                  <th class="text-center">Review</th>
+                  <th class="text-center">Aksi</th>
               </tr>
           </thead>
           <tbody>
@@ -35,7 +35,7 @@
                         Tidak Ada Foto
                     <?php endif; ?>
                   </td>
-                      <td class="text-center align-middle"><?php echo e($review->nama); ?></td>
+                      <td class="text-center align-middle fw-bold"><?php echo e($review->nama); ?></td>
                       <td class="text-center align-middle"><?php echo e($review->angkatan); ?></td>
                       <td class="text-center align-middle">
                         <?php if($review->program === 'Flutter'): ?>
@@ -139,6 +139,7 @@
   </div>
 </div>
 
+<?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <div class="modal fade" id="reviewModal<?php echo e($review->id); ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -156,6 +157,7 @@
       </div>
   </div>
 </div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 <?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <div class="modal fade" id="editReviewModal<?php echo e($review->id); ?>" tabindex="-1" aria-labelledby="editReviewModalLabel<?php echo e($review->id); ?>" aria-hidden="true">
@@ -220,24 +222,21 @@
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 <?php $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <!-- Modal Tampilkan Foto -->
     <div class="modal fade" id="tampilFotoModal<?php echo e($review->id); ?>" tabindex="-1" aria-labelledby="tampilFotoModalLabel<?php echo e($review->id); ?>" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tampilFotoModalLabel<?php echo e($review->id); ?>">Tampilkan Foto</h5>
+                    <h5 class="modal-title" id="tampilFotoModalLabel<?php echo e($review->id); ?>"><?php echo e($review->nama); ?> - Foto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <?php if($review->photo): ?>
-                            <img src="<?php echo e(asset('storage/' . $review->photo)); ?>" alt="Foto Siswa" class="img-fluid">
-                        <?php else: ?>
-                            Tidak Ada Foto
-                        <?php endif; ?>
-                    </div>
+                <div class="modal-body text-center">
+                    <?php if($review->photo): ?>
+                        <img src="<?php echo e(asset('storage/' . $review->photo)); ?>" alt="Foto Siswa" class="img-fluid" style="max-height: 400px;">
+                    <?php else: ?>
+                        Tidak Ada Foto
+                    <?php endif; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -246,6 +245,7 @@
         </div>
     </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
 
 
 
