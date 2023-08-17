@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UdaCoding - Mentoring</title>
+    <title>UdaCoding - Leaderboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{ asset('assets/AdminLTE') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -35,11 +35,8 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-success link-underline-success" href="#">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
@@ -55,11 +52,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Testimonial</a>
                     </li>
+                    @if (Route::has('login'))
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link text-success link-underline-success" href="/dashboard">{{ "Hai, " . Auth::user()->name }}</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Log in</a>
+                            </li>
+                        @endauth
+                    @endif
                 </ul>
-                <button class="btn btn-success ms-5">Join Us</button>
             </div>
         </div>
     </nav>
+
 
   <div class="container">
     <h1 class="fs-2 text-success mt-5">Leaderboard Mentoring Program</h1>
@@ -81,11 +89,11 @@
                     </select>
                 </div>
             </div>
-
             <table id="siswa" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th class="text-center">#</th>
+                        <th class="text-center">Foto</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Sekolah</th>
                         <th class="text-center">Program</th>
@@ -94,24 +102,52 @@
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    @php
-                    $no = 1;
-
-                    @endphp
-                    @foreach($siswas as $siswa)
+                    @foreach ($sortedSiswas as $siswa)
                     <tr>
-                        <td class="text-center">{{ $no++ }}</td>
-                        <td class="text-center">{{ $siswa->nama }}</td>
-                        <td class="text-center">{{ $siswa->sekolah }}</td>
-                        <td class="text-center">{{ $siswa->program }}</td>
-                        <td class="text-center">{{ $siswa->angkatan }}</td>
-                        <td class="text-center">{{ $siswa->skor }}</td>
+                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                        <td class="text-center align-middle">
+                            @if ($siswa->photo)
+                                <img src="{{ asset('storage/' . $siswa->photo) }}" alt="Foto Siswa" width="100" class="rounded">
+                            @else
+                                Tidak Ada Foto
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">{{ $siswa->nama }}</td>
+                        <td class="text-center align-middle">{{ $siswa->sekolah }}</td>
+                        <td class="text-center align-middle">
+                            @if ($siswa->program === 'Flutter')
+                                <i class="fa-brands fa-android text-success"></i> Flutter <i class="fa-brands fa-android text-success"></i>
+                            @elseif ($siswa->program === 'Kotlin')
+                                <i class="fa-solid fa-robot text-success"></i> Kotlin <i class="fa-solid fa-robot text-success"></i>
+                            @elseif ($siswa->program === 'UI Design')
+                                <i class="fas fa-paint-brush text-success"></i> UI Design <i class="fas fa-paint-brush text-success"></i>
+                            @elseif ($siswa->program === 'Web Developer')
+                                <i class="fas fa-code text-success"></i> Web Developer <i class="fas fa-code text-success"></i>
+                            @else
+                                {{ $siswa->program }}
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">{{ $siswa->angkatan }}</td>
+                        <td class="text-center align-middle">
+                            @if ($siswa->skor)
+                                <?php
+                                $totalScore = $siswa->skor->task1 + $siswa->skor->task2 + $siswa->skor->task3 + $siswa->skor->task4 +
+                                              $siswa->skor->task5 + $siswa->skor->task6 + $siswa->skor->task7 + $siswa->skor->task8;
+                                $averageScore = $totalScore / 8;
+                                ?>
+                                {{ $averageScore }}
+                            @else
+                                Error mulu bang
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
+
                 <tfoot>
                     <tr>
                         <th class="text-center">#</th>
+                        <th class="text-center">Foto</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Sekolah</th>
                         <th class="text-center">Program</th>
@@ -120,6 +156,7 @@
                     </tr>
                 </tfoot>
             </table>
+
         </div>
     </div>
 
@@ -130,31 +167,32 @@
    <script src="{{ asset('assets/AdminLTE') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
    <script>
-       $(function () {
-           $("#siswa").DataTable({
-               "responsive": true,
-               "lengthChange": true,
-               "lengthMenu": [ 10, 20, 50, 100 ],
-               "autoWidth": false,
-           });
-           var table = $('#siswa').DataTable();
-           var programs = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
+    $(function () {
+        $("#siswa").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "lengthMenu": [ 10, 20, 50, 100 ],
+            "autoWidth": false,
+        });
+        var table = $('#siswa').DataTable();
+        var programs = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
 
-           $('#program-filter').on('change', function () {
-               var program = $(this).val();
-               if (program === 'Semua Program') {
-                   table.column(3).search('').draw();
-               } else {
-                   table.column(3).search(program).draw();
-               }
-           });
-           $('#program-filter').select2({
-               data: programs,
-               placeholder: 'Filter Program',
-               allowClear: true
-           });
-       });
-   </script>
+        $('#program-filter').on('change', function () {
+            var program = $(this).val();
+            if (program === 'Semua Program') {
+                table.column(4).search('').draw(); // Kolom indeks 4 adalah kolom Program
+            } else {
+                table.column(4).search(program).draw();
+            }
+        });
+
+        $('#program-filter').select2({
+            data: programs,
+            placeholder: 'Filter Program',
+            allowClear: true
+        });
+    });
+</script>
 
 </body>
 </html>

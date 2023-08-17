@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UdaCoding - Mentoring</title>
+    <title>UdaCoding - Leaderboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <link rel="stylesheet" href="<?php echo e(asset('assets/AdminLTE')); ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -35,11 +35,8 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-success link-underline-success" href="#">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
@@ -55,11 +52,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Testimonial</a>
                     </li>
+                    <?php if(Route::has('login')): ?>
+                        <?php if(auth()->guard()->check()): ?>
+                            <li class="nav-item">
+                                <a class="nav-link text-success link-underline-success" href="/dashboard"><?php echo e("Hai, " . Auth::user()->name); ?></a>
+                            </li>
+                        <?php else: ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo e(route('login')); ?>">Log in</a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </ul>
-                <button class="btn btn-success ms-5">Join Us</button>
             </div>
         </div>
     </nav>
+
 
   <div class="container">
     <h1 class="fs-2 text-success mt-5">Leaderboard Mentoring Program</h1>
@@ -81,11 +89,11 @@
                     </select>
                 </div>
             </div>
-
             <table id="siswa" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th class="text-center">#</th>
+                        <th class="text-center">Foto</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Sekolah</th>
                         <th class="text-center">Program</th>
@@ -94,24 +102,54 @@
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    <?php
-                    $no = 1;
-
-                    ?>
-                    <?php $__currentLoopData = $siswas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $siswa): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $sortedSiswas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $siswa): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td class="text-center"><?php echo e($no++); ?></td>
-                        <td class="text-center"><?php echo e($siswa->nama); ?></td>
-                        <td class="text-center"><?php echo e($siswa->sekolah); ?></td>
-                        <td class="text-center"><?php echo e($siswa->program); ?></td>
-                        <td class="text-center"><?php echo e($siswa->angkatan); ?></td>
-                        <td class="text-center"><?php echo e($siswa->skor); ?></td>
+                        <td class="text-center align-middle"><?php echo e($loop->iteration); ?></td>
+                        <td class="text-center align-middle">
+                            <?php if($siswa->photo): ?>
+                                <img src="<?php echo e(asset('storage/' . $siswa->photo)); ?>" alt="Foto Siswa" width="100" class="rounded">
+                            <?php else: ?>
+                                Tidak Ada Foto
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-center align-middle"><?php echo e($siswa->nama); ?></td>
+                        <td class="text-center align-middle"><?php echo e($siswa->sekolah); ?></td>
+                        <td class="text-center align-middle">
+                            <?php if($siswa->program === 'Flutter'): ?>
+                                <i class="fa-brands fa-android text-success"></i> Flutter <i class="fa-brands fa-android text-success"></i>
+                            <?php elseif($siswa->program === 'Kotlin'): ?>
+                                <i class="fa-solid fa-robot text-success"></i> Kotlin <i class="fa-solid fa-robot text-success"></i>
+                            <?php elseif($siswa->program === 'UI Design'): ?>
+                                <i class="fas fa-paint-brush text-success"></i> UI Design <i class="fas fa-paint-brush text-success"></i>
+                            <?php elseif($siswa->program === 'Web Developer'): ?>
+                                <i class="fas fa-code text-success"></i> Web Developer <i class="fas fa-code text-success"></i>
+                            <?php else: ?>
+                                <?php echo e($siswa->program); ?>
+
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-center align-middle"><?php echo e($siswa->angkatan); ?></td>
+                        <td class="text-center align-middle">
+                            <?php if($siswa->skor): ?>
+                                <?php
+                                $totalScore = $siswa->skor->task1 + $siswa->skor->task2 + $siswa->skor->task3 + $siswa->skor->task4 +
+                                              $siswa->skor->task5 + $siswa->skor->task6 + $siswa->skor->task7 + $siswa->skor->task8;
+                                $averageScore = $totalScore / 8;
+                                ?>
+                                <?php echo e($averageScore); ?>
+
+                            <?php else: ?>
+                                Error mulu bang
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
+
                 <tfoot>
                     <tr>
                         <th class="text-center">#</th>
+                        <th class="text-center">Foto</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Sekolah</th>
                         <th class="text-center">Program</th>
@@ -120,6 +158,7 @@
                     </tr>
                 </tfoot>
             </table>
+
         </div>
     </div>
 
@@ -130,31 +169,32 @@
    <script src="<?php echo e(asset('assets/AdminLTE')); ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
    <script>
-       $(function () {
-           $("#siswa").DataTable({
-               "responsive": true,
-               "lengthChange": true,
-               "lengthMenu": [ 10, 20, 50, 100 ],
-               "autoWidth": false,
-           });
-           var table = $('#siswa').DataTable();
-           var programs = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
+    $(function () {
+        $("#siswa").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "lengthMenu": [ 10, 20, 50, 100 ],
+            "autoWidth": false,
+        });
+        var table = $('#siswa').DataTable();
+        var programs = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
 
-           $('#program-filter').on('change', function () {
-               var program = $(this).val();
-               if (program === 'Semua Program') {
-                   table.column(3).search('').draw();
-               } else {
-                   table.column(3).search(program).draw();
-               }
-           });
-           $('#program-filter').select2({
-               data: programs,
-               placeholder: 'Filter Program',
-               allowClear: true
-           });
-       });
-   </script>
+        $('#program-filter').on('change', function () {
+            var program = $(this).val();
+            if (program === 'Semua Program') {
+                table.column(4).search('').draw(); // Kolom indeks 4 adalah kolom Program
+            } else {
+                table.column(4).search(program).draw();
+            }
+        });
+
+        $('#program-filter').select2({
+            data: programs,
+            placeholder: 'Filter Program',
+            allowClear: true
+        });
+    });
+</script>
 
 </body>
 </html>

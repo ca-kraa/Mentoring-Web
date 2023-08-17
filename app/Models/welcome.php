@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class welcome extends Model
+class Siswa extends Model
 {
     use HasFactory;
     protected $table = 'siswas';
-    protected $fillable = ['nama', 'sekolah', 'program', 'angkatan', 'skor'];
+    protected $fillable = ['nama', 'sekolah', 'program', 'angkatan', 'photo'];
+
+    public function skors()
+    {
+        return $this->hasMany(Skor::class);
+    }
 }

@@ -42,6 +42,7 @@
 <script src="{{ asset('assets/AdminLTE') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="{{ asset('assets/AdminLTE') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{ asset('assets/AdminLTE') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 
 <script>
   $(function () {
@@ -56,7 +57,7 @@
       { extend: "excel", className: "btn btn-info", text: '<i class="fas fa-file-excel"></i> Excel' },
       { extend: "pdf", className: "btn btn-danger", text: '<i class="fas fa-file-pdf"></i> PDF' },
       { extend: "print", className: "btn btn-warning", text: '<i class="fas fa-print"></i> Print' },
-      { extend: "colvis", className: "btn btn-secondary", text: '<i class="fas fa-columns"></i> Colvis' },
+      { extend: "colvis", className: "btn btn-light", text: '<i class="fas fa-columns"></i> Colvis' },
     ]
   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
@@ -93,6 +94,79 @@
   });
 </script>
 
+<script>
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('#preview-image').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  $("#photo").change(function () {
+      readURL(this);
+  });
+</script>
+
+
+
+
+<script>
+  $(document).ready(function () {
+      $('#lihatNilaiModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget); // Tombol yang memicu modal
+          var modal = $(this);
+
+          var nama = button.data('nama');
+          var task1 = button.data('task1');
+          var task2 = button.data('task2');
+          var task3 = button.data('task3');
+          var task4 = button.data('task4');
+          var task5 = button.data('task5');
+          var task6 = button.data('task6');
+          var task7 = button.data('task7');
+          var task8 = button.data('task8');
+
+          modal.find('#siswaNama').text(nama);
+          modal.find('#task1').text(task1);
+          modal.find('#task2').text(task2);
+          modal.find('#task3').text(task3);
+          modal.find('#task4').text(task4);
+          modal.find('#task5').text(task5);
+          modal.find('#task6').text(task6);
+          modal.find('#task7').text(task7);
+          modal.find('#task8').text(task8);
+      });
+  });
+</script>
+
+<script>
+  function lihatNilai(nama, task1, task2, task3, task4, task5, task6, task7, task8) {
+      document.getElementById('siswaNama').textContent = nama;
+      document.getElementById('task1').textContent = task1;
+      document.getElementById('task2').textContent = task2;
+      document.getElementById('task3').textContent = task3;
+      document.getElementById('task4').textContent = task4;
+      document.getElementById('task5').textContent = task5;
+      document.getElementById('task6').textContent = task6;
+      document.getElementById('task7').textContent = task7;
+      document.getElementById('task8').textContent = task8;
+      $('#lihatNilaiModal').modal('show');
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+      $('.viewPhotoButton').click(function () {
+          const modalId = $(this).data('modal-id');
+          $(`#${modalId}`).modal('show');
+      });
+  });
+</script>
 
 </body>
 </html>

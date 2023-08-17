@@ -1,40 +1,48 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
-    <div class="container">
-        <div class="navbar-text">
-            <span id="clock"></span>
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="/dashboard">
+                <img src="https://i.ibb.co/HhM1Qgg/image.png" alt="Logo" height="30">
+            </a>
+            <div class="navbar-text ml-4">
+                <ul class="nav d-flex">
+                    <li class="nav-item">
+                        <a href="/dashboard" class="nav-link text-success">
+                            <i class="fas fa-home text-success"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('siswa.index') }}" class="nav-link text-success">
+                            <i class="fas fa-users text-success"></i> Siswa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('skor.index') }}" class="nav-link text-success">
+                            <i class="fas fa-ranking-star text-success"></i> Skor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('review.index') }}" class="nav-link text-success">
+                            <i class="fas fa-chart-simple text-success"></i> Review
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-         <a class="navbar-brand" href="/dashboard">
-            <img src="https://i.ibb.co/HhM1Qgg/image.png" alt="Logo" height="30">
-        </a>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="https://64.media.tumblr.com/4ca997be665ee395717da67b53784ab2/b6932c7dbfb05c51-b3/s1280x1920/c68386df0bef1c3a0d58173dd65dd0a639b83339.jpg" alt="Profile" class="img-circle" style="width: 30px;">
+                    <i class="fas fa-user"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
+                    <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </li>
         </ul>
     </div>
 </nav>
-
-<script>
-    function updateClock() {
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
-        var seconds = now.getSeconds();
-
-        var timeString = hours + ':' + minutes + ':' + seconds;
-
-        document.getElementById('clock').textContent = timeString;
-
-        setTimeout(updateClock, 1000);
-    }
-
-    updateClock();
-</script>

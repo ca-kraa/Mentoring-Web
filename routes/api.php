@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\SiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,12 +18,6 @@ use App\Http\Controllers\SiswaController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/siswa', [SiswaController::class, 'index']);
-Route::get('/siswa/{id}', [SiswaController::class, 'show']);
-Route::post('/siswa', [SiswaController::class, 'store']);
-Route::put('/siswa/{id}', [SiswaController::class, 'update']);
-Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
 
 Route::get('/siswa', [ApiController::class, 'index']);
 Route::get('/siswa/{id}', [ApiController::class, 'show']);

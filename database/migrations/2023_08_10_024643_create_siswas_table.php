@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('sekolah');
-            $table->enum('program', ['flutter', 'kotlin', 'UI Design', 'Web Developer']);
+            $table->enum('program', ['Flutter', 'Kotlin', 'UI Design', 'Web Developer']);
             $table->string('angkatan');
-            $table->integer('skor');
+            $table->string('photo');
             $table->timestamps();
         });
     }
