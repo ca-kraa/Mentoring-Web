@@ -27,6 +27,7 @@ class SiswaController extends Controller
             'sekolah' => $request->sekolah,
             'program' => $request->program,
             'angkatan' => $request->angkatan,
+            'portofolio' => $request->portofolio,
         ]);
 
         if ($request->hasFile('photo')) {
@@ -62,6 +63,7 @@ class SiswaController extends Controller
             $photoPath = $request->file('photo')->store('photos', 'public');
             $siswa->photo = $photoPath;
         }
+        $siswa->portofolio = $request->portofolio;
 
         $siswa->save();
 

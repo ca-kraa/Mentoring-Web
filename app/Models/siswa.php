@@ -10,7 +10,7 @@ class Siswa extends Model
     use HasFactory;
 
     protected $table = 'siswas';
-    protected $fillable = ['nama', 'sekolah', 'program', 'angkatan', 'photo'];
+    protected $fillable = ['nama', 'sekolah', 'program', 'angkatan', 'photo', 'portofolio'];
 
     public function skors()
     {

@@ -18,6 +18,7 @@
             <th class="text-center">Sekolah</th>
             <th class="text-center">Program</th>
             <th class="text-center">Angkatan</th>
+            <th class="text-center">Portofolio</th>
             <th class="text-center">Aksi</th>
           </tr>
         </thead>
@@ -52,6 +53,15 @@
               </td>
               <td class="text-center align-middle">Batch {{ $siswa->angkatan }}</td>
               <td class="text-center align-middle">
+                @if ($siswa->portofolio)
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#portofolioModal{{ $siswa->id }}">
+                        <i class="fa-solid fa-video"></i> Lihat
+                    </button>
+                @else
+                    Portofolio Belum Ditambahkan
+                @endif
+            </td>
+              <td class="text-center align-middle">
                 <button type="button" class="btn btn-info btn-sm viewPhotoButton" data-modal-id="lihatFotoModal{{ $siswa->id }}">
                   <i class="fa-regular fa-image"></i>
               </button>
@@ -74,6 +84,7 @@
             <th class="text-center">Sekolah</th>
             <th class="text-center">Program</th>
             <th class="text-center">Angkatan</th>
+            <th class="text-center">Portofolio</th>
             <th class="text-center">Aksi</th>
           </tr>
         </tfoot>
@@ -83,125 +94,123 @@
 
   <div class="modal fade" id="tambahDataModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah Data Siswa</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Siswa</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sekolah" class="form-label">Sekolah</label>
+                        <input type="text" class="form-control" id="sekolah" name="sekolah" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="program" class="form-label">Program</label>
+                        <select class="form-select" id="program" name="program" required>
+                            <option value="" disabled selected>Pilih Program</option>
+                            <option value="flutter">Flutter</option>
+                            <option value="kotlin">Kotlin</option>
+                            <option value="UI Design">UI Design</option>
+                            <option value="Web Developer">Web Developer</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="angkatan" class="form-label">Angkatan</label>
+                        <select class="form-select" id="angkatan" name="angkatan" required>
+                            <option value="" disabled selected>Pilih Batch</option>
+                            @for ($batch = 1; $batch <= 12; $batch++)
+                                <option value="{{ $batch }}">Batch {{ $batch }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="portofolio" class="form-label">Portofolio</label>
+                      <input type="text" class="form-control" id="portofolio" name="portofolio" required>
+                      <small class="form-text text-muted"> Contoh Link : https://www.youtube.com/embed/dQw4w9WgXcQ</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">Foto</label>
+                        <p id="sizeWarning" class="text-danger"></p>
+                        <input type="file" class="form-control" id="photo" name="photo" accept="image/jpeg, image/png" required>
+                        <small class="form-text text-muted">Maksimal ukuran file: 5 MB</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <div class="mb-3">
-                <label for="nama" class="form-label">Nama</label>
-                <input type="text" class="form-control" id="nama" name="nama" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="sekolah" class="form-label">Sekolah</label>
-                <input type="text" class="form-control" id="sekolah" name="sekolah" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="program" class="form-label">Program</label>
-                <select class="form-select" id="program" name="program" required>
-                    <option value="" disabled selected>Pilih Program</option>
-                    <option value="flutter">Flutter</option>
-                    <option value="kotlin">Kotlin</option>
-                    <option value="UI Design">UI Design</option>
-                    <option value="Web Developer">Web Developer</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="angkatan" class="form-label">Angkatan</label>
-                <select class="form-select" id="angkatan" name="angkatan" required>
-                    <option value="" disabled selected>Pilih Batch</option>
-                    @for ($batch = 1; $batch <= 12; $batch++)
-                        <option value="{{ $batch }}">Batch {{ $batch }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div class="mb-3">
-              <label for="photo" class="form-label">Foto</label>
-              <p id="sizeWarning" class="text-danger"></p>
-              <input type="file" class="form-control" id="photo" name="photo" accept="image/jpeg, image/png" required>
-              <small class="form-text text-muted">Maksimal ukuran file: 5 MB</small>
-          </div>
-
-
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  @foreach($siswas as $siswa)
-  <div class="modal fade" id="editModal{{ $siswa->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $siswa->id }}" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Data Siswa</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="{{ route('siswa.update', $siswa->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="mb-3">
-              <label for="nama" class="form-label">Nama</label>
-              <input type="text" class="form-control" id="nama" name="nama" value="{{ $siswa->nama }}" required>
-            </div>
-            <div class="mb-3">
-              <label for="sekolah" class="form-label">Sekolah</label>
-              <input type="text" class="form-control" id="sekolah" name="sekolah" value="{{ $siswa->sekolah }}" required>
-            </div>
-            <div class="mb-3">
-              <label for="program" class="form-label">Program</label>
-              <select class="form-select" id="program" name="program" required>
-                <option value="" disabled>Pilih Program</option>
-                <option value="flutter" {{ $siswa->program === 'flutter' ? 'selected' : '' }}>Flutter</option>
-                <option value="kotlin" {{ $siswa->program === 'kotlin' ? 'selected' : '' }}>Kotlin</option>
-                <option value="UI Design" {{ $siswa->program === 'UI Design' ? 'selected' : '' }}>UI Design</option>
-                <option value="Web Developer" {{ $siswa->program === 'Web Developer' ? 'selected' : '' }}>Web Developer</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="angkatan" class="form-label">
-                  Angkatan
-              </label>
-              <div class="input-group">
-                  <div class="input-group-prepend">
-                      <div class="input-group-text">
-                          <i class="fas fa-list"></i>
-                      </div>
-                  </div>
-                  <select class="form-control" id="angkatan" name="angkatan" required>
-                      <option value="" disabled>Pilih Batch</option>
-                      @for ($batch = 1; $batch <= 12; $batch++)
-                          <option value="{{ $batch }}" {{ $siswa->angkatan == $batch ? 'selected' : '' }}>
-                              <i class="fas fa-check-circle"></i>
-                              Batch {{ $batch }}
-                          </option>
-                      @endfor
-                  </select>
-              </div>
+
+@foreach($siswas as $siswa)
+<div class="modal fade" id="editModal{{ $siswa->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $siswa->id }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel{{ $siswa->id }}">Edit Data Siswa</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
+          <div class="mb-3">
+            <label for="nama" class="form-label">Nama</label>
+            <input type="text" class="form-control" id="nama" name="nama" value="{{ $siswa->nama }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="sekolah" class="form-label">Sekolah</label>
+            <input type="text" class="form-control" id="sekolah" name="sekolah" value="{{ $siswa->sekolah }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="program" class="form-label">Program</label>
+            <select class="form-select" id="program" name="program" required>
+              <option value="" disabled>Pilih Program</option>
+              <option value="flutter" {{ $siswa->program === 'flutter' ? 'selected' : '' }}>Flutter</option>
+              <option value="kotlin" {{ $siswa->program === 'kotlin' ? 'selected' : '' }}>Kotlin</option>
+              <option value="UI Design" {{ $siswa->program === 'UI Design' ? 'selected' : '' }}>UI Design</option>
+              <option value="Web Developer" {{ $siswa->program === 'Web Developer' ? 'selected' : '' }}>Web Developer</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="angkatan" class="form-label">Angkatan</label>
+            <select class="form-select" id="angkatan" name="angkatan" required>
+              <option value="" disabled>Pilih Batch</option>
+              @for ($batch = 1; $batch <= 12; $batch++)
+              <option value="{{ $batch }}" {{ $siswa->angkatan == $batch ? 'selected' : '' }}>
+                Batch {{ $batch }}
+              </option>
+              @endfor
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="portofolio" class="form-label">Portofolio</label>
+            <input type="text" class="form-control" id="portofolio" name="portofolio" value="{{ $siswa->portofolio }}" required>
           </div>
           <div class="mb-3">
             <label for="photo" class="form-label">Foto</label>
-            <input type="file" class="form-control" id="photo" name="photo" value="{{ $siswa->photo }}">
+            <input type="file" class="form-control" id="photo" name="photo" accept="image/jpeg, image/png">
           </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-          </div>
-          </form>
         </div>
-      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
     </div>
   </div>
-  @endforeach
+</div>
+@endforeach
+
 
   @foreach($siswas as $siswa)
   <div class="modal fade" id="hapusModal{{ $siswa->id }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
@@ -251,6 +260,41 @@
       </div>
   </div>
 @endforeach
+
+@foreach ($siswas as $siswa)
+<div class="modal fade" id="portofolioModal{{ $siswa->id }}" tabindex="-1" aria-labelledby="portofolioModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="portofolioModalLabel">Portofolio : {{ $siswa->nama }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              @if ($siswa->portofolio)
+                  <iframe id="videoFrame{{ $siswa->id }}" width="100%" height="315" src="{{ $siswa->portofolio }}" frameborder="0" allowfullscreen></iframe>
+              @else
+                  Portofolio belum ditambahkan.
+              @endif
+              <small class="form-text text-danger">* Jangan lupa di Pause videonya jika ingin tutup modal ini</small>
+          </div>
+      </div>
+  </div>
+</div>
+<script>
+  $('#portofolioModal{{ $siswa->id }}').on('hidden.bs.modal', function () {
+      var iframe = document.getElementById('videoFrame{{ $siswa->id }}');
+      if (iframe) {
+          var iframeSrc = iframe.src;
+          iframe.src = '';
+          iframe.src = iframeSrc;
+      }
+  });
+</script>
+@endforeach
+
+
 
 
 

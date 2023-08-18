@@ -35,7 +35,7 @@
                         Tidak Ada Foto
                     <?php endif; ?>
                   </td>
-                      <td class="text-center align-middle fw-bold"><?php echo e($review->nama); ?></td>
+                      <td class="text-center align-middle"><?php echo e($review->nama); ?></td>
                       <td class="text-center align-middle"><?php echo e($review->angkatan); ?></td>
                       <td class="text-center align-middle">
                         <?php if($review->program === 'Flutter'): ?>

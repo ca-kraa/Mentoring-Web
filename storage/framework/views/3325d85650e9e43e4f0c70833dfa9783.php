@@ -71,8 +71,6 @@
       "lengthMenu": [ 10, 20, 50, 100 ],
       "autoWidth": false,
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-    // Buat select filter untuk kolom "Program"
     var table = $('#siswa').DataTable();
     var programs = ['Flutter', 'Kotlin', 'UI Design', 'Web Developer'];
 
@@ -84,8 +82,6 @@
         table.column(3).search(program).draw();
       }
     });
-
-    // Inisialisasi select2 filter
     $('#program-filter').select2({
       data: programs,
       placeholder: 'Filter Program',
