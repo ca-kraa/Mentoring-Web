@@ -155,7 +155,7 @@
                 <tfoot>
                     <tr>
                         <th class="text-center">#</th>
-                        <t class="text-center">Foto</th>
+                        <th class="text-center">Foto</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Sekolah</th>
                         <th class="text-center">Program</th>
